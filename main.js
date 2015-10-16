@@ -14,11 +14,14 @@ function Location(locationName, number)  {
     //methods
     this.getlocationName = function() {return this.locationName};
     this.getnumber = function() {return this.number};
+
+
 }
 //var isaac = new Location("Isaac", 20);
 //var emily = new Location("Emily", 20)
 var locations = [];
-for (var i in locationNames.length) {
+//locations.push(new Location("Isaac",20));
+for (var i = 0; i < locationNames.length; i++) {
     locations.push(new Location(locationNames[i], 2));
 }
 
