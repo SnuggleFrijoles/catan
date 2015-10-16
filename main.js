@@ -15,19 +15,19 @@ class Location  {
     
 
     //methods
-<<<<<<< HEAD
+
     get locationName() {
     	return this.locationName
     };
    	get number {
    		return this.number
    	};
-=======
+
     this.getlocationName = function() {return this.locationName};
     this.getnumber = function() {return this.number};
 
 
->>>>>>> 440493ec08538a65758a6a6fd46dd98fb3da554f
+
 }
 //var isaac = new Location("Isaac", 20);
 //var emily = new Location("Emily", 20)
