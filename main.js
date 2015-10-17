@@ -32,10 +32,8 @@ class Location  {
 	}
 */
 }
-//var isaac = new Location("Isaac", 20);
-//var emily = new Location("Emily", 20)
+
 var locations = [];
-//locations.push(new Location("Isaac",20));
 for (var i = 0; i < locationNames.length; i++) {
 	locations.push(new Location(locationNames[i], 2));
 }
