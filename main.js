@@ -5,7 +5,7 @@
 "use strict";
 
 var locationNames = ["Hills", "Forest", "Mountains", "Fields", "Pasture", "Dessert"];
-
+// adding a comment here
 //location card class
 class Location  {
 	//constructor
