@@ -1,30 +1,38 @@
 "use strict";
 
+var tileWidth = 124, tileHeight = 108;
+
 //location card class
 class Location {
     //constructor
-    constructor(locationName, value, x, y) {
+    constructor(id, locationName, value, x, y) {
+        this.id = id;
         this.locationName = locationName;
         this.value = value;
         this.x = x;
         this.y = y;
 
-        // Get the right color for each location
+        // Get the right color and resource name for each location
         switch (locationName) {
             case "Hills":
                 this.color = "brown";
+                this.resourceName = "brick";
                 break;
             case "Forest":
                 this.color = "darkgreen";
+                this.resourceName = "lumber";
                 break;
             case "Mountains":
                 this.color = "grey";
+                this.resourceName = "ore";
                 break;
             case "Fields":
                 this.color = "yellow";
+                this.resourceName = "grain";
                 break;
             case "Pasture":
                 this.color = "lightgreen";
+                this.resourceName = "wool";
                 break;
             case "Dessert":
                 this.color = "tan";
@@ -74,55 +82,56 @@ class Board {
         // Randomly shuffle the location array and the values array
         locations = shuffle(locations);
         values = shuffle(values);
+        
+        // Get the position of the robber
+        this.robberPosition = locations.indexOf("Dessert");
 
         // Store tiles with correct positions and values
         var x = 200,
             y = 50,
-            tileWidth = 124,
-            tileHeight = 108,
             valIndex = 0;
 
         for (var i = 0; i < 3; i++) {
             if (locations[i] != "Dessert")
-                this.tiles.push(new Location(locations[i], values[valIndex++], x, y));
+                this.tiles.push(new Location(i, locations[i], values[valIndex++], x, y));
             else
-                this.tiles.push(new Location(locations[i], 0, x, y));
+                this.tiles.push(new Location(i, locations[i], 0, x, y));
             x += tileWidth;
         }
         x -= 3.5 * tileWidth;
         y += tileHeight;
         for (var i = 3; i < 7; i++) {
             if (locations[i] != "Dessert")
-                this.tiles.push(new Location(locations[i], values[valIndex++], x, y));
+                this.tiles.push(new Location(i, locations[i], values[valIndex++], x, y));
             else
-                this.tiles.push(new Location(locations[i], 0, x, y));
+                this.tiles.push(new Location(i, locations[i], 0, x, y));
             x += tileWidth;
         }
         x -= 4.5 * tileWidth;
         y += tileHeight;
         for (var i = 7; i < 12; i++) {
             if (locations[i] != "Dessert")
-                this.tiles.push(new Location(locations[i], values[valIndex++], x, y));
+                this.tiles.push(new Location(i, locations[i], values[valIndex++], x, y));
             else
-                this.tiles.push(new Location(locations[i], 0, x, y));
+                this.tiles.push(new Location(i, locations[i], 0, x, y));
             x += tileWidth;
         }
         x -= 4.5 * tileWidth;
         y += tileHeight;
         for (var i = 12; i < 16; i++) {
             if (locations[i] != "Dessert")
-                this.tiles.push(new Location(locations[i], values[valIndex++], x, y));
+                this.tiles.push(new Location(i, locations[i], values[valIndex++], x, y));
             else
-                this.tiles.push(new Location(locations[i], 0, x, y));
+                this.tiles.push(new Location(i, locations[i], 0, x, y));
             x += tileWidth;
         }
         x -= 3.5 * tileWidth;
         y += tileHeight;
         for (var i = 16; i < 19; i++) {
             if (locations[i] != "Dessert")
-                this.tiles.push(new Location(locations[i], values[valIndex++], x, y));
+                this.tiles.push(new Location(i, locations[i], values[valIndex++], x, y));
             else
-                this.tiles.push(new Location(locations[i], 0, x, y));
+                this.tiles.push(new Location(i, locations[i], 0, x, y));
             x += tileWidth;
         }
     }
@@ -173,13 +182,52 @@ class Board {
         canvasContext.fillStyle = "black";
         canvasContext.stroke();
     }
+    
+    // Function to draw a circle
+    drawCircle(context, centerX, centerY, radius) {
+        context.beginPath();
+        context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+        context.fillStyle = "lightgrey";
+        context.fill();
+        context.strokeStyle = "black";
+        context.stroke();
+    }
 
     // Render function
     render(ctx) {
+        // Fill the background
+        ctx.fillStyle = "LightSkyBlue";
+        ctx.fillRect(0, 0, pageWidth, pageHeight);
+        
         // Draw each tile
         for (var i = 0; i < this.tiles.length; i++) {
             this.drawTile(this.tiles[i]);
         }
+        
+        // Draw the robber
+        var robberX = 262, robberY = 120;
+        
+        if (0 <= this.robberPosition && this.robberPosition < 3) {
+            robberX += tileWidth * this.robberPosition;
+        }
+        else if (3 <= this.robberPosition && this.robberPosition < 7) {
+            robberX += tileWidth * (this.robberPosition - 3) - 0.5 * tileWidth;
+            robberY += tileHeight;
+        }
+        else if (7 <= this.robberPosition && this.robberPosition < 12) {
+            robberX += tileWidth * (this.robberPosition - 7) - 1 * tileWidth;
+            robberY += 2 * tileHeight;
+        }
+        else if (12 <= this.robberPosition && this.robberPosition < 16) {
+            robberX += tileWidth * (this.robberPosition - 12) - 0.5 * tileWidth;
+            robberY += 3 * tileHeight;
+        }
+        else {
+            robberX += tileWidth * (this.robberPosition - 16);
+            robberY += 4 * tileHeight;
+        }
+        
+        this.drawCircle(ctx, robberX, robberY, 30);
     }
 }
 
@@ -204,21 +252,3 @@ function shuffle(array) {
     return array;
 }
 
-// Get the page bounds
-var w = window,
-    d = document,
-    e = d.documentElement,
-    g = d.getElementsByTagName('body')[0],
-    pageWidth = w.innerWidth || e.clientWidth || g.clientWidth,
-    pageHeight = w.innerHeight || e.clientHeight || g.clientHeight;
-
-
-// Testing canvas
-var canvas = document.getElementById('canvas');
-canvas.width = pageWidth;
-canvas.height = pageHeight;
-var ctx = canvas.getContext("2d");
-
-// Fill the background
-ctx.fillStyle = "LightSkyBlue";
-ctx.fillRect(0, 0, pageWidth, pageHeight);
