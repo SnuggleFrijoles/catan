@@ -18,26 +18,7 @@ class Game {
         // Check for 7 roll
         if (roll != 7) {
             // Add necessary resources to players hands
-            var tiles = this.board.tiles;
-            for (var i = 0; i < tiles.length; i++) {
-                // Check if tile value matches roll
-                var tile = tiles[i];
-                if (tile.value == roll) {
-                    // Check if robber is on that tile
-                    if (this.board.robberPosition != tile.id) {
-                        // See if any players are on that tile
-                        for (var j = 0; j < players.length; j++) {
-                            // Loop through players owned tiles
-                            var player = players[j];
-
-                            // If the player has atleast one ownership on that tile, give resource
-                            var ownership = player.ownedTiles[tile.id];
-                            if (ownership > 0)
-                                player.resources[tile.resourceName] += ownership;
-                        }
-                    }
-                }
-            }
+            this.addResources(roll);
         }
         else {
             // Move the robber
@@ -59,5 +40,30 @@ class Game {
     diceRoll() {
         // Sum two dice rolls 1-6
         return Math.floor(Math.random() * 6) + 1 + Math.floor(Math.random() * 6) + 1;
+    }
+    
+    // Method for adding resources based on roll
+    addResources(roll) {
+        // Loop through the board tiles
+        var tiles = this.board.tiles;
+        for (var i = 0; i < tiles.length; i++) {
+            // Check if tile value matches roll
+            var tile = tiles[i];
+            if (tile.value == roll) {
+                // Check if robber is on that tile
+                if (this.board.robberPosition != tile.id) {
+                    // See if any players are on that tile
+                    for (var j = 0; j < players.length; j++) {
+                        // Loop through players owned tiles
+                        var player = players[j];
+
+                        // If the player has atleast one ownership on that tile, give resource
+                        var ownership = player.ownedTiles[tile.id];
+                        if (ownership > 0)
+                            player.resources[tile.resourceName] += ownership;
+                    }
+                }
+            }
+        }
     }
 }
