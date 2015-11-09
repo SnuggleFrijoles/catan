@@ -46,7 +46,7 @@ class Location {
 
 // Class for whole board of tiles
 class Board {
-    // Constructor, 
+    // Constructor
     constructor() {
         // Setup array for all tiles
         this.tiles = [];

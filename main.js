@@ -49,8 +49,6 @@ for (var i = 1; i <= numPlayers; i++) {
     playerColors.push(color);
 }
 
-console.log(players);
-
 // Setup new game
 var game = new Game(players);
 

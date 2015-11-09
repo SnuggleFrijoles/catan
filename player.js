@@ -16,6 +16,7 @@ class Player {
             grain: 0,
             wool: 0
         };
-        this.ownedTiles = [];
+        // Trick to make array of 0's
+        this.ownedTiles = new Array(19+1).join('0').split('').map(parseFloat);
     }
 }
