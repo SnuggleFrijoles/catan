@@ -29,6 +29,28 @@ class Game {
             this.board.robberPosition = newRobberPosition;
         }
         
+        // Ask if player wants to build, loop until no
+        var willBuild = prompt(this.players[turn].name + ", would you like to build anything? (y/n)");
+        
+        while (willBuild == "y" || willBuild == "Y") {
+            // Get what item they would like to build
+            var buildItem;
+            do {
+                buildItem = prompt(this.players[turn].name + ", what would you like to build: (1-4)\n" + 
+                                       "\t 1) Road (1 lumber, 1 brick)\n" +
+                                       "\t 2) Settlement (1 lumber, 1 brick, 1 grain, 1 wool)\n" +
+                                       "\t 3) City (2 ore, 3 grain)\n" +
+                                       "\t 4) Development Card (1 grain, 1 ore, 1 sheep)\n");
+            } while (buildItem < 1 || buildItem > 4);
+             
+            // Build the item
+            this.build(buildItem);
+            
+            // Ask if they would like to build again
+            willBuild = prompt(this.players[turn].name + ", would you like to build again? (y/n)");
+        }
+       
+        
         // Render board
         game.board.render(ctx);
         
@@ -64,6 +86,75 @@ class Game {
                     }
                 }
             }
+        }
+    }
+    
+    // Method for building an item
+    build(buildItem) {
+        // Get player resources
+        var resources = this.players[this.turn].resources;
+        
+        // Do appropriate action
+        switch (buildItem) {
+            case 1:
+                // Check if player has resources for road
+                if (resources.brick >= 1 && resources.lumber >= 1) {
+                    // Decrement resources
+                    this.players[this.turn].resources.brick -= 1;
+                    this.players[this.turn].resources.lumber -= 1;
+                    
+                    // TODO: Check if player has longest road
+                }
+                else
+                    alert("Sorry " + this.players[turn].name + ", you do not have the resources to build that.");
+                break;
+            case 2:
+                // Check if player has resources for settlement
+                if (resources.brick >= 1 && resources.lumber >= 1 && resources.grain >= 1 && resources.wool >= 1) {
+                    // Decrement resources
+                    this.players[this.turn].resources.brick -= 1;
+                    this.players[this.turn].resources.lumber -= 1;
+                    this.players[this.turn].resources.grain -= 1;
+                    this.players[this.turn].resources.wool -= 1;
+                    
+                    // Add victory points
+                    this.players[this.turn].points += 1;
+                }
+                else
+                    alert("Sorry " + this.players[turn].name + ", you do not have the resources to build that.");
+                break;
+            case 3:
+                // Check if player has resources for city
+                if (resources.ore >= 2 && resources.grain >= 3) {
+                    // TODO: Check if player has a valid settlement to turn into a city
+                    
+                    // Decrement resources
+                    this.players[this.turn].resources.ore -= 2;
+                    this.players[this.turn].resources.grain -= 3;
+                    
+                    // Add victory points
+                    this.players[this.turn].points += 1;
+                }
+                else
+                    alert("Sorry " + this.players[turn].name + ", you do not have the resources to build that.");
+                break;
+            case 4:
+                // Check if player has resources for development card
+                if (resources.ore >= 1 && resources.grain >= 1 && resources.wool >= 1) {
+                    // Decrement resources
+                    this.players[this.turn].resources.ore -= 1;
+                    this.players[this.turn].resources.grain -= 1;
+                    this.players[this.turn].resources.wool -= 1;
+                    
+                    // TODO: Add development card to players hand
+                }
+                else
+                    alert("Sorry " + this.players[turn].name + ", you do not have the resources to build that.");
+                break;
+            default:
+                // Give error
+                alert("Not a valid item.");
+                break;
         }
     }
 }
