@@ -192,19 +192,9 @@ class Board {
         context.strokeStyle = "black";
         context.stroke();
     }
-
-    // Render function
-    render(ctx) {
-        // Fill the background
-        ctx.fillStyle = "LightSkyBlue";
-        ctx.fillRect(0, 0, pageWidth, pageHeight);
-        
-        // Draw each tile
-        for (var i = 0; i < this.tiles.length; i++) {
-            this.drawTile(this.tiles[i]);
-        }
-        
-        // Draw the robber
+    
+    // Function to draw robber
+    drawRobber() {
         var robberX = 262, robberY = 120;
         
         if (0 <= this.robberPosition && this.robberPosition < 3) {
@@ -228,6 +218,32 @@ class Board {
         }
         
         this.drawCircle(ctx, robberX, robberY, 30);
+    }
+
+    // Render function
+    render(players) {
+        // Fill the background
+        ctx.fillStyle = "LightSkyBlue";
+        ctx.fillRect(0, 0, pageWidth, pageHeight);
+        
+        // Draw each tile
+        for (var i = 0; i < this.tiles.length; i++) {
+            this.drawTile(this.tiles[i]);
+        }
+        
+        // Draw the robber
+        this.drawRobber();
+        
+        // Draw player names and scores
+        var playerX = 800, playerY = 100;
+        ctx.strokeStyle = "black";
+        for (var i = 0; i < players.length; i++) {
+            ctx.fillStyle = players[i].color;
+            ctx.font = "50px Arial";
+            ctx.fillText(players[i].name + ": " + players[i].points, playerX, playerY);
+            ctx.strokeText(players[i].name + ": " + players[i].points, playerX, playerY);
+            playerY += 100;
+        }
     }
 }
 

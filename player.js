@@ -18,5 +18,7 @@ class Player {
         };
         // Trick to make array of 0's
         this.ownedTiles = new Array(19+1).join('0').split('').map(parseFloat);
+        this.settlements = [];
+        this.cities = [];
     }
 }

@@ -29,30 +29,70 @@ class Game {
             this.board.robberPosition = newRobberPosition;
         }
         
+        // Ask if user wants to trade
+        var willTrade = prompt(this.players[this.turn].name + ", would you like to trade? (y/n)");
+        
+        while (willTrade == "y" || willTrade == "Y") {
+            // Get what item they would like to trade
+            var tradeWhat, tradeFor;
+            do {
+                tradeWhat = prompt(this.players[this.turn].name + ", what would you like to trade: (1-5)\n" + 
+                                       "\t Lumber (You have " + this.players[this.turn].resources.lumber + ")\n" +
+                                       "\t Brick (You have " + this.players[this.turn].resources.brick + ")\n" +
+                                       "\t Grain (You have " + this.players[this.turn].resources.grain + ")\n" +
+                                       "\t Wool (You have " + this.players[this.turn].resources.wool + ")\n" +
+                                       "\t Ore (You have " + this.players[this.turn].resources.ore + ")\n").toLowerCase();
+            } while (tradeWhat != "lumber" && tradeWhat != "brick" && tradeWhat != "grain" && tradeWhat != "wool" && tradeWhat != "ore");
+            
+            // Check if player has enough
+            if (this.players[this.turn].resources[tradeWhat] >= 4) {
+                // Decrement their resource
+                this.players[this.turn].resources[tradeWhat] -= 4;
+                
+                // Get what resource they want to trade for
+                do {
+                    tradeWhat = prompt(this.players[this.turn].name + ", what would you like to trade for: (1-5)\n" + 
+                                           "\t Lumber (You have " + this.players[this.turn].resources.lumber + ")\n" +
+                                           "\t Brick (You have " + this.players[this.turn].resources.brick + ")\n" +
+                                           "\t Grain (You have " + this.players[this.turn].resources.grain + ")\n" +
+                                           "\t Wool (You have " + this.players[this.turn].resources.wool + ")\n" +
+                                           "\t Ore (You have " + this.players[this.turn].resources.ore + ")\n").toLowerCase();
+                } while (tradeWhat != "lumber" && tradeWhat != "brick" && tradeWhat != "grain" && tradeWhat != "wool" && tradeWhat != "ore");
+                
+                // Add one resource
+                this.players[this.turn].resources[tradeFor] += 1;
+            }
+            else
+                alert("Sorry " + this.players[this.turn].name + ", you do not have enough " + tradeWhat + " to trade.");
+            
+            // Ask if they would like to trade again
+            willTrade = prompt(this.players[this.turn].name + ", would you like to trade again? (y/n)");
+        }
+        
         // Ask if player wants to build, loop until no
-        var willBuild = prompt(this.players[turn].name + ", would you like to build anything? (y/n)");
+        var willBuild = prompt(this.players[this.turn].name + ", would you like to build anything? (y/n)");
         
         while (willBuild == "y" || willBuild == "Y") {
             // Get what item they would like to build
             var buildItem;
             do {
-                buildItem = prompt(this.players[turn].name + ", what would you like to build: (1-4)\n" + 
+                buildItem = parseInt(prompt(this.players[this.turn].name + ", what would you like to build: (1-4)\n" + 
                                        "\t 1) Road (1 lumber, 1 brick)\n" +
                                        "\t 2) Settlement (1 lumber, 1 brick, 1 grain, 1 wool)\n" +
                                        "\t 3) City (2 ore, 3 grain)\n" +
-                                       "\t 4) Development Card (1 grain, 1 ore, 1 sheep)\n");
+                                       "\t 4) Development Card (1 grain, 1 ore, 1 sheep)\n"));
             } while (buildItem < 1 || buildItem > 4);
              
             // Build the item
             this.build(buildItem);
             
             // Ask if they would like to build again
-            willBuild = prompt(this.players[turn].name + ", would you like to build again? (y/n)");
+            willBuild = prompt(this.players[this.turn].name + ", would you like to build again? (y/n)");
         }
        
         
         // Render board
-        game.board.render(ctx);
+        game.board.render(this.players);
         
         // Increment turn
         this.turn = (this.turn + 1) % this.numPlayers;
@@ -103,10 +143,12 @@ class Game {
                     this.players[this.turn].resources.brick -= 1;
                     this.players[this.turn].resources.lumber -= 1;
                     
+                    // TODO: Get location of build site
+                    // TODO: Draw new road at location
                     // TODO: Check if player has longest road
                 }
                 else
-                    alert("Sorry " + this.players[turn].name + ", you do not have the resources to build that.");
+                    alert("Sorry " + this.players[this.turn].name + ", you do not have the resources to build that.");
                 break;
             case 2:
                 // Check if player has resources for settlement
@@ -117,26 +159,36 @@ class Game {
                     this.players[this.turn].resources.grain -= 1;
                     this.players[this.turn].resources.wool -= 1;
                     
+                    // TODO: Get location of build site
+                    // TODO: Draw new settlement at location
+                    
                     // Add victory points
                     this.players[this.turn].points += 1;
                 }
                 else
-                    alert("Sorry " + this.players[turn].name + ", you do not have the resources to build that.");
+                    alert("Sorry " + this.players[this.turn].name + ", you do not have the resources to build that.");
                 break;
             case 3:
                 // Check if player has resources for city
-                if (resources.ore >= 2 && resources.grain >= 3) {
-                    // TODO: Check if player has a valid settlement to turn into a city
-                    
-                    // Decrement resources
-                    this.players[this.turn].resources.ore -= 2;
-                    this.players[this.turn].resources.grain -= 3;
-                    
-                    // Add victory points
-                    this.players[this.turn].points += 1;
+                if (resources.ore >= 3 && resources.grain >= 2) {
+                    // Check if player has a valid settlement to turn into a city
+                    if (this.players[turn].settlements.length >= 1) {
+
+                        // Decrement resources
+                        this.players[this.turn].resources.ore -= 3;
+                        this.players[this.turn].resources.grain -= 2;
+
+                        // TODO: Get location of build site
+                        // TODO: Draw new city at location
+
+                        // Add victory points
+                        this.players[this.turn].points += 1;
+                    }
+                    else
+                        alert("Sorry " + this.players[this.turn].name + ", you do not have a settlement to build on.");
                 }
                 else
-                    alert("Sorry " + this.players[turn].name + ", you do not have the resources to build that.");
+                    alert("Sorry " + this.players[this.turn].name + ", you do not have the resources to build that.");
                 break;
             case 4:
                 // Check if player has resources for development card
@@ -149,7 +201,7 @@ class Game {
                     // TODO: Add development card to players hand
                 }
                 else
-                    alert("Sorry " + this.players[turn].name + ", you do not have the resources to build that.");
+                    alert("Sorry " + this.players[this.turn].name + ", you do not have the resources to build that.");
                 break;
             default:
                 // Give error

@@ -52,5 +52,5 @@ for (var i = 1; i <= numPlayers; i++) {
 // Setup new game
 var game = new Game(players);
 
-game.board.render(ctx);
+game.board.render(game.players);
 
