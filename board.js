@@ -1,48 +1,7 @@
 "use strict";
 
-var tileWidth = 124, tileHeight = 108;
-
-//location card class
-class Location {
-    //constructor
-    constructor(id, locationName, value, x, y) {
-        this.id = id;
-        this.locationName = locationName;
-        this.value = value;
-        this.x = x;
-        this.y = y;
-
-        // Get the right color and resource name for each location
-        switch (locationName) {
-            case "Hills":
-                this.color = "brown";
-                this.resourceName = "brick";
-                break;
-            case "Forest":
-                this.color = "darkgreen";
-                this.resourceName = "lumber";
-                break;
-            case "Mountains":
-                this.color = "grey";
-                this.resourceName = "ore";
-                break;
-            case "Fields":
-                this.color = "yellow";
-                this.resourceName = "grain";
-                break;
-            case "Pasture":
-                this.color = "lightgreen";
-                this.resourceName = "wool";
-                break;
-            case "Dessert":
-                this.color = "tan";
-                break;
-            default:
-                this.color = "red";
-                break;
-        }
-    }
-}
+var tileWidth = 124,
+    tileHeight = 108;
 
 // Class for whole board of tiles
 class Board {
@@ -82,7 +41,7 @@ class Board {
         // Randomly shuffle the location array and the values array
         locations = shuffle(locations);
         values = shuffle(values);
-        
+
         // Get the position of the robber
         this.robberPosition = locations.indexOf("Dessert");
 
@@ -138,8 +97,10 @@ class Board {
 
     // Function to draw a single tile
     drawTile(location) {
+        // Draw the hexagon
         this.drawHexagon(ctx, location.x, location.y, location.color);
 
+        // Draw the number
         if (location.value != 0) {
             if (location.value == 6 || location.value == 8)
                 ctx.fillStyle = "red";
@@ -151,8 +112,7 @@ class Board {
             if (location.value < 10) {
                 ctx.fillText(location.value, location.x + 47, location.y + 90);
                 ctx.strokeText(location.value, location.x + 47, location.y + 90);
-            }
-            else {
+            } else {
                 ctx.fillText(location.value, location.x + 33, location.y + 90);
                 ctx.strokeText(location.value, location.x + 33, location.y + 90);
             }
@@ -182,7 +142,7 @@ class Board {
         canvasContext.fillStyle = "black";
         canvasContext.stroke();
     }
-    
+
     // Function to draw a circle
     drawCircle(context, centerX, centerY, radius) {
         context.beginPath();
@@ -192,31 +152,28 @@ class Board {
         context.strokeStyle = "black";
         context.stroke();
     }
-    
+
     // Function to draw robber
     drawRobber() {
-        var robberX = 262, robberY = 120;
-        
+        var robberX = 262,
+            robberY = 120;
+
         if (0 <= this.robberPosition && this.robberPosition < 3) {
             robberX += tileWidth * this.robberPosition;
-        }
-        else if (3 <= this.robberPosition && this.robberPosition < 7) {
+        } else if (3 <= this.robberPosition && this.robberPosition < 7) {
             robberX += tileWidth * (this.robberPosition - 3) - 0.5 * tileWidth;
             robberY += tileHeight;
-        }
-        else if (7 <= this.robberPosition && this.robberPosition < 12) {
+        } else if (7 <= this.robberPosition && this.robberPosition < 12) {
             robberX += tileWidth * (this.robberPosition - 7) - 1 * tileWidth;
             robberY += 2 * tileHeight;
-        }
-        else if (12 <= this.robberPosition && this.robberPosition < 16) {
+        } else if (12 <= this.robberPosition && this.robberPosition < 16) {
             robberX += tileWidth * (this.robberPosition - 12) - 0.5 * tileWidth;
             robberY += 3 * tileHeight;
-        }
-        else {
+        } else {
             robberX += tileWidth * (this.robberPosition - 16);
             robberY += 4 * tileHeight;
         }
-        
+
         this.drawCircle(ctx, robberX, robberY, 30);
     }
 
@@ -225,17 +182,18 @@ class Board {
         // Fill the background
         ctx.fillStyle = "LightSkyBlue";
         ctx.fillRect(0, 0, pageWidth, pageHeight);
-        
+
         // Draw each tile
         for (var i = 0; i < this.tiles.length; i++) {
             this.drawTile(this.tiles[i]);
         }
-        
+
         // Draw the robber
         this.drawRobber();
-        
+
         // Draw player names and scores
-        var playerX = 800, playerY = 100;
+        var playerX = 800,
+            playerY = 100;
         ctx.strokeStyle = "black";
         for (var i = 0; i < players.length; i++) {
             ctx.fillStyle = players[i].color;
@@ -267,4 +225,3 @@ function shuffle(array) {
 
     return array;
 }
-
