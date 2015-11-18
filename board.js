@@ -12,31 +12,10 @@ class Board {
 
         // Make a list with the right number of each tile
         var locationNames = ["Hills", "Forest", "Mountains", "Fields", "Pasture", "Dessert"];
-        var locations = [];
-
-        for (var i = 0; i < 3; i++)
-            locations.push("Hills");
-        for (var i = 0; i < 4; i++)
-            locations.push("Forest");
-        for (var i = 0; i < 3; i++)
-            locations.push("Mountains");
-        for (var i = 0; i < 4; i++)
-            locations.push("Fields");
-        for (var i = 0; i < 4; i++)
-            locations.push("Pasture");
-        locations.push("Dessert");
+        var locations = ["Hills", "Hills", "Hills", "Forest", "Forest", "Forest", "Forest", "Mountains", "Mountains", "Mountains", "Fields", "Fields", "Fields", "Fields", "Pasture", "Pasture", "Pasture", "Pasture", "Dessert"];
 
         // Make a list with the right number of each tile value
-        var values = [];
-
-        values.push(2);
-        for (var i = 3; i < 12; i++) {
-            if (i != 7) {
-                for (var j = 0; j < 2; j++)
-                    values.push(i);
-            }
-        }
-        values.push(12);
+        var values = [2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12];
 
         // Randomly shuffle the location array and the values array
         locations = shuffle(locations);
@@ -51,7 +30,7 @@ class Board {
             valIndex = 0;
 
         for (var i = 0; i < 3; i++) {
-            if (locations[i] != "Dessert")
+            if (i != this.robberPosition)
                 this.tiles.push(new Location(i, locations[i], values[valIndex++], x, y));
             else
                 this.tiles.push(new Location(i, locations[i], 0, x, y));
@@ -60,7 +39,7 @@ class Board {
         x -= 3.5 * tileWidth;
         y += tileHeight;
         for (var i = 3; i < 7; i++) {
-            if (locations[i] != "Dessert")
+            if (i != this.robberPosition)
                 this.tiles.push(new Location(i, locations[i], values[valIndex++], x, y));
             else
                 this.tiles.push(new Location(i, locations[i], 0, x, y));
@@ -69,7 +48,7 @@ class Board {
         x -= 4.5 * tileWidth;
         y += tileHeight;
         for (var i = 7; i < 12; i++) {
-            if (locations[i] != "Dessert")
+            if (i != this.robberPosition)
                 this.tiles.push(new Location(i, locations[i], values[valIndex++], x, y));
             else
                 this.tiles.push(new Location(i, locations[i], 0, x, y));
@@ -78,7 +57,7 @@ class Board {
         x -= 4.5 * tileWidth;
         y += tileHeight;
         for (var i = 12; i < 16; i++) {
-            if (locations[i] != "Dessert")
+            if (i != this.robberPosition)
                 this.tiles.push(new Location(i, locations[i], values[valIndex++], x, y));
             else
                 this.tiles.push(new Location(i, locations[i], 0, x, y));
@@ -87,7 +66,7 @@ class Board {
         x -= 3.5 * tileWidth;
         y += tileHeight;
         for (var i = 16; i < 19; i++) {
-            if (locations[i] != "Dessert")
+            if (i != this.robberPosition)
                 this.tiles.push(new Location(i, locations[i], values[valIndex++], x, y));
             else
                 this.tiles.push(new Location(i, locations[i], 0, x, y));
