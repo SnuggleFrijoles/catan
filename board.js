@@ -11,7 +11,6 @@ class Board {
         this.tiles = [];
 
         // Make a list with the right number of each tile
-        var locationNames = ["Hills", "Forest", "Mountains", "Fields", "Pasture", "Dessert"];
         var locations = ["Hills", "Hills", "Hills", "Forest", "Forest", "Forest", "Forest", "Mountains", "Mountains", "Mountains", "Fields", "Fields", "Fields", "Fields", "Pasture", "Pasture", "Pasture", "Pasture", "Dessert"];
 
         // Make a list with the right number of each tile value

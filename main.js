@@ -54,3 +54,5 @@ var game = new Game(players);
 
 game.board.render(game.players);
 
+// TODO: Have players build their first two settlements and roads
+
