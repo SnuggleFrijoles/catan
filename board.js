@@ -1,4 +1,7 @@
+/* jshint esnext: true */
 "use strict";
+
+import Location from "location.js";
 
 var tileWidth = 124,
     tileHeight = 108;
@@ -11,7 +14,12 @@ class Board {
         this.tiles = [];
 
         // Make a list with the right number of each tile
-        var locations = ["Hills", "Hills", "Hills", "Forest", "Forest", "Forest", "Forest", "Mountains", "Mountains", "Mountains", "Fields", "Fields", "Fields", "Fields", "Pasture", "Pasture", "Pasture", "Pasture", "Dessert"];
+        var locations = ["Hills", "Hills", "Hills",
+            "Forest", "Forest", "Forest", "Forest",
+            "Mountains", "Mountains", "Mountains",
+            "Fields", "Fields", "Fields", "Fields",
+            "Pasture", "Pasture", "Pasture", "Pasture",
+            "Dessert"];
 
         // Make a list with the right number of each tile value
         var values = [2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12];
@@ -26,9 +34,10 @@ class Board {
         // Store tiles with correct positions and values
         var x = 200,
             y = 50,
-            valIndex = 0;
+            valIndex = 0,
+            i;
 
-        for (var i = 0; i < 3; i++) {
+        for (i = 0; i < 3; i++) {
             if (i != this.robberPosition)
                 this.tiles.push(new Location(i, locations[i], values[valIndex++], x, y));
             else
@@ -37,7 +46,7 @@ class Board {
         }
         x -= 3.5 * tileWidth;
         y += tileHeight;
-        for (var i = 3; i < 7; i++) {
+        for (i = 3; i < 7; i++) {
             if (i != this.robberPosition)
                 this.tiles.push(new Location(i, locations[i], values[valIndex++], x, y));
             else
@@ -46,7 +55,7 @@ class Board {
         }
         x -= 4.5 * tileWidth;
         y += tileHeight;
-        for (var i = 7; i < 12; i++) {
+        for (i = 7; i < 12; i++) {
             if (i != this.robberPosition)
                 this.tiles.push(new Location(i, locations[i], values[valIndex++], x, y));
             else
@@ -55,7 +64,7 @@ class Board {
         }
         x -= 4.5 * tileWidth;
         y += tileHeight;
-        for (var i = 12; i < 16; i++) {
+        for (i = 12; i < 16; i++) {
             if (i != this.robberPosition)
                 this.tiles.push(new Location(i, locations[i], values[valIndex++], x, y));
             else
@@ -64,7 +73,7 @@ class Board {
         }
         x -= 3.5 * tileWidth;
         y += tileHeight;
-        for (var i = 16; i < 19; i++) {
+        for (i = 16; i < 19; i++) {
             if (i != this.robberPosition)
                 this.tiles.push(new Location(i, locations[i], values[valIndex++], x, y));
             else
@@ -74,12 +83,12 @@ class Board {
     }
 
     // Function to draw a single tile
-    drawTile(location) {
+    drawTile(ctx, location) {
         // Draw the hexagon
         this.drawHexagon(ctx, location.x, location.y, location.color);
 
         // Draw the number
-        if (location.value != 0) {
+        if (location.value !== 0) {
             if (location.value == 6 || location.value == 8)
                 ctx.fillStyle = "red";
             else
@@ -132,7 +141,7 @@ class Board {
     }
 
     // Function to draw robber
-    drawRobber() {
+    drawRobber(ctx) {
         var robberX = 262,
             robberY = 120;
 
@@ -156,7 +165,7 @@ class Board {
     }
 
     // Render function
-    render(players) {
+    render(ctx, players, pageWidth, pageHeight) {
         // Fill the background
         ctx.fillStyle = "LightSkyBlue";
         ctx.fillRect(0, 0, pageWidth, pageHeight);
@@ -167,13 +176,13 @@ class Board {
         }
 
         // Draw the robber
-        this.drawRobber();
+        this.drawRobber(ctx);
 
         // Draw player names and scores
         var playerX = 800,
             playerY = 100;
         ctx.strokeStyle = "black";
-        for (var i = 0; i < players.length; i++) {
+        for (i = 0; i < players.length; i++) {
             ctx.fillStyle = players[i].color;
             ctx.font = "50px Arial";
             ctx.fillText(players[i].name + ": " + players[i].points, playerX, playerY);

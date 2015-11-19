@@ -1,5 +1,7 @@
+/* jshint esnext: true */
+
 //location card class
-class Location {
+export default class Location {
     //constructor
     constructor(id, locationName, value, x, y) {
         this.id = id;
