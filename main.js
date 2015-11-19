@@ -4,6 +4,9 @@
 
 "use strict";
 
+//import Player from "player.js";
+//import Game from "game.js";
+
 // Get the page bounds
 var w = window,
     d = document,
@@ -19,7 +22,6 @@ canvas.width = pageWidth;
 canvas.height = pageHeight;
 var ctx = canvas.getContext("2d");
 
-
 // Get number of players
 var numPlayers;
 do {
@@ -32,27 +34,26 @@ var playerNames = [];
 var playerColors = [];
 
 for (var i = 1; i <= numPlayers; i++) {
-    var name, color;
-    
+    var playerName, color;
+
     // Get name and color, checking for blanks and duplicates
     do {
-        name = prompt("Enter Player " + i + " name: ");
-    } while (!name || playerNames.indexOf(name) != -1);
-    
+        playerName = prompt("Enter Player " + i + " name: ");
+    } while (!playerName || playerNames.indexOf(playerName) != -1);
+
     do {
         color = prompt("Enter Player " + i + " color (Ex. blue, red, green, yellow): ");
     } while (!color || playerColors.indexOf(color) != -1);
-    
+
     // Add new player to player list
-    players.push(new Player(name, color));
-    playerNames.push(name);
+    players.push(new Player(playerName, color));
+    playerNames.push(playerName);
     playerColors.push(color);
 }
 
 // Setup new game
 var game = new Game(players);
 
-game.board.render(game.players);
+game.board.render(ctx, game.players);
 
 // TODO: Have players build their first two settlements and roads
-

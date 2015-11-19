@@ -1,7 +1,6 @@
-/* jshint esnext: true */
 "use strict";
 
-import Location from "location.js";
+//import Location from "location.js";
 
 var tileWidth = 124,
     tileHeight = 108;
@@ -165,14 +164,14 @@ class Board {
     }
 
     // Render function
-    render(ctx, players, pageWidth, pageHeight) {
+    render(ctx, players) {
         // Fill the background
         ctx.fillStyle = "LightSkyBlue";
         ctx.fillRect(0, 0, pageWidth, pageHeight);
 
         // Draw each tile
         for (var i = 0; i < this.tiles.length; i++) {
-            this.drawTile(this.tiles[i]);
+            this.drawTile(ctx, this.tiles[i]);
         }
 
         // Draw the robber
