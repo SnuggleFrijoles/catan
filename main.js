@@ -15,13 +15,6 @@ var w = window,
     pageWidth = w.innerWidth || e.clientWidth || g.clientWidth,
     pageHeight = w.innerHeight || e.clientHeight || g.clientHeight;
 
-
-// Get canvas info canvas
-var canvas = document.getElementById('canvas');
-canvas.width = pageWidth;
-canvas.height = pageHeight;
-var ctx = canvas.getContext("2d");
-
 // Get number of players
 var numPlayers;
 do {
@@ -54,6 +47,7 @@ for (var i = 1; i <= numPlayers; i++) {
 // Setup new game
 var game = new Game(players);
 
-game.board.render(ctx, game.players);
+game.board.render(game.players);
 
 // TODO: Have players build their first two settlements and roads
+// TODO: Run a game.nextTurn() cycle until the game is over

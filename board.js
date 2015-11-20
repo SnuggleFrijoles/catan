@@ -9,6 +9,12 @@ var tileWidth = 124,
 class Board {
     // Constructor
     constructor() {
+        // Get canvas info
+        this.canvas = document.getElementById('canvas');
+        this.canvas.width = pageWidth;
+        this.canvas.height = pageHeight;
+        this.ctx = this.canvas.getContext("2d");
+
         // Setup array for all tiles
         this.tiles = [];
 
@@ -82,31 +88,31 @@ class Board {
     }
 
     // Function to draw a single tile
-    drawTile(ctx, location) {
+    drawTile(location) {
         // Draw the hexagon
-        this.drawHexagon(ctx, location.x, location.y, location.color);
+        this.drawHexagon(location.x, location.y, location.color);
 
         // Draw the number
         if (location.value !== 0) {
             if (location.value == 6 || location.value == 8)
-                ctx.fillStyle = "red";
+                this.ctx.fillStyle = "red";
             else
-                ctx.fillStyle = "black";
-            ctx.strokeStyle = "black";
-            ctx.font = "50px Arial";
+                this.ctx.fillStyle = "black";
+            this.ctx.strokeStyle = "black";
+            this.ctx.font = "50px Arial";
 
             if (location.value < 10) {
-                ctx.fillText(location.value, location.x + 47, location.y + 90);
-                ctx.strokeText(location.value, location.x + 47, location.y + 90);
+                this.ctx.fillText(location.value, location.x + 47, location.y + 90);
+                this.ctx.strokeText(location.value, location.x + 47, location.y + 90);
             } else {
-                ctx.fillText(location.value, location.x + 33, location.y + 90);
-                ctx.strokeText(location.value, location.x + 33, location.y + 90);
+                this.ctx.fillText(location.value, location.x + 33, location.y + 90);
+                this.ctx.strokeText(location.value, location.x + 33, location.y + 90);
             }
         }
     }
 
     // Function to draw a hexagon
-    drawHexagon(canvasContext, x, y, fillColor) {
+    drawHexagon(x, y, fillColor) {
         var sideLength = 72;
         var hexagonAngle = 0.523598776; // 30 degrees in radians
         var hexHeight = Math.sin(hexagonAngle) * sideLength;
@@ -114,19 +120,19 @@ class Board {
         var hexRectangleHeight = sideLength + 2 * hexHeight;
         var hexRectangleWidth = 2 * hexRadius;
 
-        canvasContext.fillStyle = fillColor;
-        canvasContext.beginPath();
-        canvasContext.moveTo(x + hexRadius, y);
-        canvasContext.lineTo(x + hexRectangleWidth, y + hexHeight);
-        canvasContext.lineTo(x + hexRectangleWidth, y + hexHeight + sideLength);
-        canvasContext.lineTo(x + hexRadius, y + hexRectangleHeight);
-        canvasContext.lineTo(x, y + sideLength + hexHeight);
-        canvasContext.lineTo(x, y + hexHeight);
-        canvasContext.closePath();
+        this.ctx.fillStyle = fillColor;
+        this.ctx.beginPath();
+        this.ctx.moveTo(x + hexRadius, y);
+        this.ctx.lineTo(x + hexRectangleWidth, y + hexHeight);
+        this.ctx.lineTo(x + hexRectangleWidth, y + hexHeight + sideLength);
+        this.ctx.lineTo(x + hexRadius, y + hexRectangleHeight);
+        this.ctx.lineTo(x, y + sideLength + hexHeight);
+        this.ctx.lineTo(x, y + hexHeight);
+        this.ctx.closePath();
 
-        canvasContext.fill();
-        canvasContext.fillStyle = "black";
-        canvasContext.stroke();
+        this.ctx.fill();
+        this.ctx.fillStyle = "black";
+        this.ctx.stroke();
     }
 
     // Function to draw a circle
@@ -140,7 +146,7 @@ class Board {
     }
 
     // Function to draw robber
-    drawRobber(ctx) {
+    drawRobber() {
         var robberX = 262,
             robberY = 120;
 
@@ -160,32 +166,32 @@ class Board {
             robberY += 4 * tileHeight;
         }
 
-        this.drawCircle(ctx, robberX, robberY, 30);
+        this.drawCircle(this.ctx, robberX, robberY, 30);
     }
 
     // Render function
-    render(ctx, players) {
+    render(players) {
         // Fill the background
-        ctx.fillStyle = "LightSkyBlue";
-        ctx.fillRect(0, 0, pageWidth, pageHeight);
+        this.ctx.fillStyle = "LightSkyBlue";
+        this.ctx.fillRect(0, 0, pageWidth, pageHeight);
 
         // Draw each tile
         for (var i = 0; i < this.tiles.length; i++) {
-            this.drawTile(ctx, this.tiles[i]);
+            this.drawTile(this.tiles[i]);
         }
 
         // Draw the robber
-        this.drawRobber(ctx);
+        this.drawRobber();
 
         // Draw player names and scores
         var playerX = 800,
             playerY = 100;
-        ctx.strokeStyle = "black";
+        this.ctx.strokeStyle = "black";
         for (i = 0; i < players.length; i++) {
-            ctx.fillStyle = players[i].color;
-            ctx.font = "50px Arial";
-            ctx.fillText(players[i].name + ": " + players[i].points, playerX, playerY);
-            ctx.strokeText(players[i].name + ": " + players[i].points, playerX, playerY);
+            this.ctx.fillStyle = players[i].color;
+            this.ctx.font = "50px Arial";
+            this.ctx.fillText(players[i].name + ": " + players[i].points, playerX, playerY);
+            this.ctx.strokeText(players[i].name + ": " + players[i].points, playerX, playerY);
             playerY += 100;
         }
     }

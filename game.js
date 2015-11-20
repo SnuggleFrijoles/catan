@@ -14,6 +14,7 @@ class Game {
 
     // Method for next turn
     nextTurn() {
+
         // -------------------
         // RESOURCE PRODUCTION
         // -------------------
@@ -160,6 +161,10 @@ class Game {
 
         // Increment turn
         this.turn = (this.turn + 1) % this.numPlayers;
+
+        // TODO: Add support for playing development cards
+        // Rules say dev cards can be played at any time during the turn
+        // May have to make it sequential after some other part
     }
 
     // Method for dice roll

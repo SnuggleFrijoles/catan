@@ -89,5 +89,5 @@
     "yui"           : false,    // Yahoo User Interface
 
     // Custom Globals
-    "globals"       : {}        // additional predefined global variables
+    "globals"       : {"Player": true, "Game": true, "Location": true, "Board": true, "pageWidth": true, "pageHeight": true}        // additional predefined global variables
 }
