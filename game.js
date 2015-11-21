@@ -23,7 +23,7 @@ class Game {
         // -------------------
         // RESOURCE PRODUCTION
         // -------------------
-
+        
         // Make a random roll
         var roll = this.diceRoll();
         console.log(this.turn + " " + roll);
@@ -162,7 +162,7 @@ class Game {
         }
 
         // Render board
-        this.board.render(this.ctx, this.players);
+        this.board.render(this.players);
 
         // Increment turn
         this.incTurn();
@@ -216,18 +216,25 @@ class Game {
         // Do appropriate action
         switch (buildItem) {
             case 1:
-                // Check if player has resources for road
-                if (resources.brick >= 1 && resources.lumber >= 1) {
-                    // Decrement resources
-                    this.players[this.turn].resources.brick -= 1;
-                    this.players[this.turn].resources.lumber -= 1;
+                if (!initial) {
+                    // Check if player has resources for road
+                    if (resources.brick >= 1 && resources.lumber >= 1) {
+                        // Decrement resources
+                        this.players[this.turn].resources.brick -= 1;
+                        this.players[this.turn].resources.lumber -= 1;
 
-                    // TODO: Get location of build site
-                    // TODO: Draw new road at location
-                    // TODO: Check if player has longest road
+
+                    }
+                    else {
+                        alert("Sorry " + this.players[this.turn].name + ", you do not have the resources to build that.");
+                        break;
+                    }
                 }
-                else
-                    alert("Sorry " + this.players[this.turn].name + ", you do not have the resources to build that.");
+
+                // TODO: Get location of build site
+                // TODO: Draw new road at location
+                // TODO: Check if player has longest road
+
                 break;
             case 2:
                 // Check if this is the inital build
@@ -250,7 +257,7 @@ class Game {
                 var buildSite;
 
                 do {
-                    buildSite = parseInt(prompt(this.players[this.turn] + ", enter the build site index for your settlment: "));
+                    buildSite = parseInt(prompt(this.players[this.turn].name + ", enter the build site index for your settlement: "));
                 } while(buildSite < 0 || buildSite > 53 || this.board.usedBuildSites.indexOf(buildSite) != -1);
 
                 // Add the index of the settlement build site to the player data

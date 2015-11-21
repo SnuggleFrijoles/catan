@@ -62,23 +62,31 @@ function getGoodBoard () {
     console.log("Should be rendered");
 
     // Ask if board is okay after a slight delay
-    setTimeout(ask, 100);
+    setTimeout(confirmBoard, 100);
 }
 
-function ask() {
+function confirmBoard() {
     var boardOkay = prompt("Is this board good? (y/n:)");
     if (boardOkay != 'y' && boardOkay != 'Y')
         getGoodBoard();
+    else
+        buildInitalSetup();
 }
 
 // Get a good board
 getGoodBoard();
 
-
-// TODO: Have players build their first two settlements and roads
-for (var i = 1; i <= numPlayers; i++) {
-    game.build(2, true);
-    game.incTurn();
+function buildInitalSetup() {
+    // Have players build their first two settlements and roads
+    for (var i = 1; i <= numPlayers; i++) {
+        game.build(2, true);
+        game.incTurn();
+    }
+    for (var i = 1; i <= numPlayers; i++) {
+        game.build(2, true);
+        game.incTurn();
+    }
+    game.board.render(game.players);
 }
 
 // TODO: Run a game.nextTurn() cycle until the game is over
