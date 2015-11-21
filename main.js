@@ -64,7 +64,7 @@ function getGoodBoard () {
     // Ask if board is okay after a slight delay
     setTimeout(ask, 100);
 }
-
+//Hello this is a test
 function ask() {
     var boardOkay = prompt("Is this board good? (y/n:)");
     if (boardOkay != 'y' && boardOkay != 'Y')
