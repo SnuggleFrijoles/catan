@@ -71,6 +71,7 @@ function confirmBoard() {
         getGoodBoard();
     else
         buildInitalSetup();
+        // asdfasdfasdf
 }
 
 // Get a good board
