@@ -71,6 +71,7 @@ function confirmBoard() {
         getGoodBoard();
     else
         buildInitalSetup();
+      //NEED TO PEE
 }
 
 // Get a good board
