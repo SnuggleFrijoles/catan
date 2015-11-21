@@ -274,8 +274,6 @@ class Board {
 
         // TODO: Draw all of the players roads
 
-        rendered = true;
-        makingBoard = false;
     }
 }
 

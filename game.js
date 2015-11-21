@@ -23,7 +23,7 @@ class Game {
         // -------------------
         // RESOURCE PRODUCTION
         // -------------------
-        
+
         // Make a random roll
         var roll = this.diceRoll();
         console.log(this.turn + " " + roll);
@@ -254,6 +254,8 @@ class Game {
                 }
 
                 // Get location of build site
+                // TODO: Make sure location is valid
+                // Sites have to be atleast two spots away from a previous city or settlement
                 var buildSite;
 
                 do {

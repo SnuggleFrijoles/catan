@@ -13,8 +13,8 @@ var w = window,
     e = d.documentElement,
     g = d.getElementsByTagName('body')[0],
     pageWidth = w.innerWidth || e.clientWidth || g.clientWidth,
-    pageHeight = w.innerHeight || e.clientHeight || g.clientHeight,
-    requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
+    pageHeight = w.innerHeight || e.clientHeight || g.clientHeight;
+    //requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
 
 // Get number of players
 var numPlayers;
@@ -82,7 +82,7 @@ function buildInitalSetup() {
         game.build(2, true);
         game.incTurn();
     }
-    for (var i = 1; i <= numPlayers; i++) {
+    for (i = 1; i <= numPlayers; i++) {
         game.build(2, true);
         game.incTurn();
     }
