@@ -12,6 +12,11 @@ class Game {
         this.ctx = ctx;
     }
 
+    // Method for creating a new board
+    newBoard() {
+        this.board = new Board();
+    }
+
     // Method for next turn
     nextTurn() {
 
@@ -157,14 +162,19 @@ class Game {
         }
 
         // Render board
-        this.game.board.render(this.ctx, this.players);
+        this.board.render(this.ctx, this.players);
 
         // Increment turn
-        this.turn = (this.turn + 1) % this.numPlayers;
+        this.incTurn();
 
         // TODO: Add support for playing development cards
         // Rules say dev cards can be played at any time during the turn
         // May have to make it sequential after some other part
+    }
+
+    // Method for incrementing turn
+    incTurn() {
+        this.turn = (this.turn + 1) % this.numPlayers;
     }
 
     // Method for dice roll
@@ -199,7 +209,7 @@ class Game {
     }
 
     // Method for building an item
-    build(buildItem) {
+    build(buildItem, initial) {
         // Get player resources
         var resources = this.players[this.turn].resources;
 
@@ -220,22 +230,37 @@ class Game {
                     alert("Sorry " + this.players[this.turn].name + ", you do not have the resources to build that.");
                 break;
             case 2:
-                // Check if player has resources for settlement
-                if (resources.brick >= 1 && resources.lumber >= 1 && resources.grain >= 1 && resources.wool >= 1) {
-                    // Decrement resources
-                    this.players[this.turn].resources.brick -= 1;
-                    this.players[this.turn].resources.lumber -= 1;
-                    this.players[this.turn].resources.grain -= 1;
-                    this.players[this.turn].resources.wool -= 1;
-
-                    // TODO: Get location of build site
-                    // TODO: Draw new settlement at location
-
-                    // Add victory points
-                    this.players[this.turn].points += 1;
+                // Check if this is the inital build
+                if (!initial) {
+                    // Check if player has resources for settlement
+                    if (resources.brick >= 1 && resources.lumber >= 1 && resources.grain >= 1 && resources.wool >= 1) {
+                        // Decrement resources
+                        this.players[this.turn].resources.brick -= 1;
+                        this.players[this.turn].resources.lumber -= 1;
+                        this.players[this.turn].resources.grain -= 1;
+                        this.players[this.turn].resources.wool -= 1;
+                    }
+                    else {
+                        alert("Sorry " + this.players[this.turn].name + ", you do not have the resources to build that.");
+                        break;
+                    }
                 }
-                else
-                    alert("Sorry " + this.players[this.turn].name + ", you do not have the resources to build that.");
+
+                // Get location of build site
+                var buildSite;
+
+                do {
+                    buildSite = parseInt(prompt(this.players[this.turn] + ", enter the build site index for your settlment: "));
+                } while(buildSite < 0 || buildSite > 53 || this.board.usedBuildSites.indexOf(buildSite) != -1);
+
+                // Add the index of the settlement build site to the player data
+                this.players[this.turn].settlements.push(buildSite);
+
+                // Render to draw new settlement at location
+                this.board.render(this.players);
+
+                // Add victory points
+                this.players[this.turn].points += 1;
                 break;
             case 3:
                 // Check if player has resources for city

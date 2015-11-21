@@ -13,12 +13,13 @@ var w = window,
     e = d.documentElement,
     g = d.getElementsByTagName('body')[0],
     pageWidth = w.innerWidth || e.clientWidth || g.clientWidth,
-    pageHeight = w.innerHeight || e.clientHeight || g.clientHeight;
+    pageHeight = w.innerHeight || e.clientHeight || g.clientHeight,
+    requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
 
 // Get number of players
 var numPlayers;
 do {
-    numPlayers = prompt("Enter number of players: ");
+    numPlayers = prompt("Enter number of players (2-4): ");
 } while (2 > numPlayers || numPlayers > 4);
 
 // Get player names and colors
@@ -47,7 +48,37 @@ for (var i = 1; i <= numPlayers; i++) {
 // Setup new game
 var game = new Game(players);
 
-game.board.render(game.players);
+// Get an adaquate board
+
+var goodBoard , rendered = false, makingBoard = false;
+
+// Make a couple functions in order to get around things being too fast
+function getGoodBoard () {
+    // Make a new board
+    game.newBoard();
+
+    // Render the new board
+    game.board.render(game.players);
+    console.log("Should be rendered");
+
+    // Ask if board is okay after a slight delay
+    setTimeout(ask, 100);
+}
+
+function ask() {
+    var boardOkay = prompt("Is this board good? (y/n:)");
+    if (boardOkay != 'y' && boardOkay != 'Y')
+        getGoodBoard();
+}
+
+// Get a good board
+getGoodBoard();
+
 
 // TODO: Have players build their first two settlements and roads
+for (var i = 1; i <= numPlayers; i++) {
+    game.build(2, true);
+    game.incTurn();
+}
+
 // TODO: Run a game.nextTurn() cycle until the game is over

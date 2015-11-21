@@ -3,7 +3,8 @@
 //import Location from "location.js";
 
 var tileWidth = 124,
-    tileHeight = 108;
+    tileHeight = 108,
+    tileBigHeight = 140;
 
 // Class for whole board of tiles
 class Board {
@@ -37,8 +38,8 @@ class Board {
         this.robberPosition = locations.indexOf("Dessert");
 
         // Store tiles with correct positions and values
-        var x = 200,
-            y = 50,
+        var x = 1.61290323 * tileWidth,
+            y = 0.46296296 * tileHeight,
             valIndex = 0,
             i;
 
@@ -85,6 +86,10 @@ class Board {
                 this.tiles.push(new Location(i, locations[i], 0, x, y));
             x += tileWidth;
         }
+
+        // Setup variables for storing used build sites
+        this.usedBuildSites = [];
+        this.usedRoadSites = [];
     }
 
     // Function to draw a single tile
@@ -147,8 +152,8 @@ class Board {
 
     // Function to draw robber
     drawRobber() {
-        var robberX = 262,
-            robberY = 120;
+        var robberX = 2.11290323 * tileWidth,
+            robberY = 1.11111111 * tileHeight;
 
         if (0 <= this.robberPosition && this.robberPosition < 3) {
             robberX += tileWidth * this.robberPosition;
@@ -169,8 +174,69 @@ class Board {
         this.drawCircle(this.ctx, robberX, robberY, 30);
     }
 
+    // Function to draw a settlement
+    drawSettlement(index, color) {
+        // Set color
+        this.ctx.fillStyle = color;
+        this.ctx.strokeStyle = "black";
+
+        // Get the coordinates of where to draw the settlement
+        var x = 2 * tileWidth, y = 0.416666667 * tileHeight;
+
+        if (0 <= index && index < 3) {
+            x += tileWidth * index;
+        } else if (3 <= index && index < 7) {
+            x += tileWidth * (index - 3) - 0.5 * tileWidth;
+            y += (1 / 4) * tileBigHeight;
+        } else if (7 <= index && index < 11) {
+            x += tileWidth * (index - 7) - 0.5 * tileWidth;
+            y += (3 / 4) * tileBigHeight;
+        } else if (11 <= index && index < 16) {
+            x += tileWidth * (index - 11) - 1 * tileWidth;
+            y += (4 / 4) * tileBigHeight;
+        } else if (16 <= index && index < 21) {
+            x += tileWidth * (index - 16) - 1 * tileWidth;
+            y += (6 / 4) * tileBigHeight;
+        } else if (21 <= index && index < 27) {
+            x += tileWidth * (index - 21) - 1.5 * tileWidth;
+            y += (7 / 4) * tileBigHeight;
+        } else if (27 <= index && index < 33) {
+            x += tileWidth * (index - 27) - 1.5 * tileWidth;
+            y += (9 / 4) * tileBigHeight;
+        } else if (33 <= index && index < 38) {
+            x += tileWidth * (index - 33) - 1 * tileWidth;
+            y += (10 / 4) * tileBigHeight;
+        } else if (38 <= index && index < 43) {
+            x += tileWidth * (index - 38) - 1 * tileWidth;
+            y += (12 / 4) * tileBigHeight;
+        } else if (43 <= index && index < 47) {
+            x += tileWidth * (index - 43) - 0.5 * tileWidth;
+            y += (13 / 4) * tileBigHeight;
+        } else if (47 <= index && index < 51) {
+            x += tileWidth * (index - 47) - 0.5 * tileWidth;
+            y += (15 / 4) * tileBigHeight;
+        } else if (51 <= index && index < 54) {
+            x += tileWidth * (index - 51);
+            y += (16 / 4) * tileBigHeight;
+        } else {
+            x = NaN;
+            y = NaN;
+        }
+
+        // Draw the square
+        this.ctx.fillRect(x, y, 30, 30);
+        this.ctx.strokeRect(x, y, 30, 30);
+    }
+
+    // Function to draw a city
+    drawCity(index, color) {
+        // Set color
+        this.ctx.fillStyle = color;
+    }
+
     // Render function
     render(players) {
+        console.log("rendering");
         // Fill the background
         this.ctx.fillStyle = "LightSkyBlue";
         this.ctx.fillRect(0, 0, pageWidth, pageHeight);
@@ -194,6 +260,22 @@ class Board {
             this.ctx.strokeText(players[i].name + ": " + players[i].points, playerX, playerY);
             playerY += 100;
         }
+
+        // Draw all of the players settlements and cities
+        for (i = 0; i < players.length; i++) {
+            for (var j = 0; j < players[i].settlements.length; j++) {
+                this.drawSettlement(players[i].settlements[j], players[i].color);
+            }
+            for (j = 0; j < players[i].cities.length; j++) {
+                this.drawCity(players[i].cities[j], this.players[i].color);
+            }
+        }
+
+
+        // TODO: Draw all of the players roads
+
+        rendered = true;
+        makingBoard = false;
     }
 }
 
