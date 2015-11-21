@@ -13,8 +13,8 @@ var w = window,
     e = d.documentElement,
     g = d.getElementsByTagName('body')[0],
     pageWidth = w.innerWidth || e.clientWidth || g.clientWidth,
-    pageHeight = w.innerHeight || e.clientHeight || g.clientHeight;
-    //requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
+    pageHeight = w.innerHeight || e.clientHeight || g.clientHeight,
+    requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
 
 // Get number of players
 var numPlayers;
@@ -64,15 +64,18 @@ function getGoodBoard () {
     // Ask if board is okay after a slight delay
     setTimeout(confirmBoard, 100);
 }
+<<<<<<< HEAD
+//Hello this is a test
+function ask() {
+=======
 
 function confirmBoard() {
+>>>>>>> f73e2e8333dd6029e7b979ba2a7c5a74c30beef0
     var boardOkay = prompt("Is this board good? (y/n:)");
     if (boardOkay != 'y' && boardOkay != 'Y')
         getGoodBoard();
     else
         buildInitalSetup();
-
-      //NEED TO PEE
 }
 
 // Get a good board
@@ -84,7 +87,7 @@ function buildInitalSetup() {
         game.build(2, true);
         game.incTurn();
     }
-    for (i = 1; i <= numPlayers; i++) {
+    for (var i = 1; i <= numPlayers; i++) {
         game.build(2, true);
         game.incTurn();
     }

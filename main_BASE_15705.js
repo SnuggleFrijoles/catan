@@ -13,8 +13,8 @@ var w = window,
     e = d.documentElement,
     g = d.getElementsByTagName('body')[0],
     pageWidth = w.innerWidth || e.clientWidth || g.clientWidth,
-    pageHeight = w.innerHeight || e.clientHeight || g.clientHeight;
-    //requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
+    pageHeight = w.innerHeight || e.clientHeight || g.clientHeight,
+    requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
 
 // Get number of players
 var numPlayers;
@@ -62,33 +62,23 @@ function getGoodBoard () {
     console.log("Should be rendered");
 
     // Ask if board is okay after a slight delay
-    setTimeout(confirmBoard, 100);
+    setTimeout(ask, 100);
 }
 
-function confirmBoard() {
+function ask() {
     var boardOkay = prompt("Is this board good? (y/n:)");
     if (boardOkay != 'y' && boardOkay != 'Y')
         getGoodBoard();
-    else
-        buildInitalSetup();
-
-      //NEED TO PEE
 }
 
 // Get a good board
 getGoodBoard();
 
-function buildInitalSetup() {
-    // Have players build their first two settlements and roads
-    for (var i = 1; i <= numPlayers; i++) {
-        game.build(2, true);
-        game.incTurn();
-    }
-    for (i = 1; i <= numPlayers; i++) {
-        game.build(2, true);
-        game.incTurn();
-    }
-    game.board.render(game.players);
+
+// TODO: Have players build their first two settlements and roads
+for (var i = 1; i <= numPlayers; i++) {
+    game.build(2, true);
+    game.incTurn();
 }
 
 // TODO: Run a game.nextTurn() cycle until the game is over
