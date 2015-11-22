@@ -33,10 +33,23 @@ class Game {
             // Add necessary resources to players hands
             this.addResources(roll);
 
-            // TODO: Check if players have more than 7 cards
-            // TODO: Make player with more than 7 cards discard half (rounded down) cards
+
         }
         else {
+            //check and get rid of cards if more than 7
+            for (var player in players) {
+                var sumOfResources = 0;
+                for (var key in this.players[player].resources) {
+                    if (this.players[player].resources.hasOwnProperty(key)) {
+                        sumOfResources += this.players[this.turn][player].resources[key];
+                    }
+                }
+                if (sumOfResources > 7) {
+                    this.dropCards();
+                }
+
+            }
+
             // Move the robber
             var newRobberPosition;
             do {
@@ -206,6 +219,12 @@ class Game {
                 }
             }
         }
+    }
+
+    //method for dropping cards if you have more than 7 cards
+    dropCards() {
+        //TODO: make this method
+        console.log("You have to get rid of cards!");
     }
 
     // Method for building an item
