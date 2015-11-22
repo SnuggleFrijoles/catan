@@ -37,17 +37,17 @@ class Game {
         }
         else {
             //check and get rid of cards if more than 7
-            for (var player in players) {
+            for (var i = 0; i < this.players.length; i++) {
+                var player = this.players[i];
                 var sumOfResources = 0;
-                for (var key in this.players[player].resources) {
-                    if (this.players[player].resources.hasOwnProperty(key)) {
+                for (var key in player.resources) {
+                    if (player.resources.hasOwnProperty(key)) {
                         sumOfResources += this.players[this.turn][player].resources[key];
                     }
                 }
                 if (sumOfResources > 7) {
                     this.dropCards();
                 }
-
             }
 
             // Move the robber
