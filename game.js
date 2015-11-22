@@ -20,10 +20,28 @@ class Game {
     // Method for next turn
     nextTurn() {
 
-        // -------------------
-        // RESOURCE PRODUCTION
-        // -------------------
+        // Produce resources
+        this.produceResources();
 
+        // Trade
+        this.trade();
+
+        // Build
+        this.build();
+
+        // Render board
+        this.board.render(this.players);
+
+        // Increment turn
+        this.incTurn();
+
+        // TODO: Add support for playing development cards
+        // Rules say dev cards can be played at any time during the turn
+        // May have to make it sequential after some other part
+    }
+
+    // Method for rolling and resource production
+    produceResources() {
         // Make a random roll
         var roll = this.diceRoll();
         console.log(this.turn + " " + roll);
@@ -59,11 +77,10 @@ class Game {
 
             // TODO: Allow player to steal from someone on the new robber tile
         }
+    }
 
-        // -------------------
-        //    TRADE PHASE
-        // -------------------
-
+    // Method for mangaging trading
+    trade() {
         // Ask if user wants to trade
         var willTrade = prompt(this.players[this.turn].name + ", would you like to trade? (y/n)");
 
@@ -148,11 +165,10 @@ class Game {
             // Ask if they would like to trade again
             willTrade = prompt(this.players[this.turn].name + ", would you like to trade again? (y/n)");
         }
+    }
 
-        // -------------------
-        //    BUILD PHASE
-        // -------------------
-
+    // Method for managing building
+    build() {
         // Ask if player wants to build, loop until no
         var willBuild = prompt(this.players[this.turn].name + ", would you like to build anything? (y/n)");
 
@@ -168,21 +184,11 @@ class Game {
             } while (buildItem < 1 || buildItem > 4);
 
             // Build the item
-            this.build(buildItem);
+            this.buildItem(buildItem, false);
 
             // Ask if they would like to build again
             willBuild = prompt(this.players[this.turn].name + ", would you like to build again? (y/n)");
         }
-
-        // Render board
-        this.board.render(this.players);
-
-        // Increment turn
-        this.incTurn();
-
-        // TODO: Add support for playing development cards
-        // Rules say dev cards can be played at any time during the turn
-        // May have to make it sequential after some other part
     }
 
     // Method for incrementing turn
@@ -228,7 +234,7 @@ class Game {
     }
 
     // Method for building an item
-    build(buildItem, initial) {
+    buildItem(item, initial) {
         // Get player resources
         var resources = this.players[this.turn].resources;
 
