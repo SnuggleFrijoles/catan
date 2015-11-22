@@ -91,4 +91,7 @@ function buildInitalSetup() {
     game.board.render(game.players);
 }
 
-// TODO: Run a game.nextTurn() cycle until the game is over
+// Run a game.nextTurn() cycle until the game is over
+while (!game.over) {
+    game.nextTurn();
+}

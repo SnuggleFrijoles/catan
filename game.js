@@ -10,6 +10,7 @@ class Game {
         this.board = new Board();
         this.turn = 0;
         this.ctx = ctx;
+        this.over = false;
     }
 
     // Method for creating a new board
@@ -19,7 +20,6 @@ class Game {
 
     // Method for next turn
     nextTurn() {
-
         // Produce resources
         this.produceResources();
 
@@ -239,7 +239,7 @@ class Game {
         var resources = this.players[this.turn].resources;
 
         // Do appropriate action
-        switch (buildItem) {
+        switch (item) {
             case 1:
                 if (!initial) {
                     // Check if player has resources for road
