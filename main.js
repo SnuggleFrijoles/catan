@@ -59,7 +59,6 @@ function getGoodBoard () {
 
     // Render the new board
     game.board.render(game.players);
-    console.log("Should be rendered");
 
     // Ask if board is okay after a slight delay
     setTimeout(confirmBoard, 100);
@@ -71,8 +70,6 @@ function confirmBoard() {
         getGoodBoard();
     else
         buildInitalSetup();
-
-      //NEED TO PEE
 }
 
 // Get a good board
@@ -81,17 +78,20 @@ getGoodBoard();
 function buildInitalSetup() {
     // Have players build their first two settlements and roads
     for (var i = 1; i <= numPlayers; i++) {
-        game.build(2, true);
+        game.buildItem(2, true);
         game.incTurn();
     }
     for (i = 1; i <= numPlayers; i++) {
-        game.build(2, true);
+        game.buildItem(2, true);
         game.incTurn();
     }
     game.board.render(game.players);
+    setTimeout(main, 100);
 }
 
-// Run a game.nextTurn() cycle until the game is over
-while (!game.over) {
-    game.nextTurn();
+function main() {
+    // Run a game.nextTurn() cycle until the game is over
+    while (!game.over) {
+        game.nextTurn();
+    }
 }

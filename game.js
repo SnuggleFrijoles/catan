@@ -23,6 +23,14 @@ class Game {
         // Produce resources
         this.produceResources();
 
+        // Tell the player what they have
+        alert(this.players[this.turn].name + ", here is your hand:\n" +
+               "\t Lumber: " + this.players[this.turn].resources.lumber + "\n" +
+               "\t Brick: " + this.players[this.turn].resources.brick + "\n" +
+               "\t Grain: " + this.players[this.turn].resources.grain + "\n" +
+               "\t Wool: " + this.players[this.turn].resources.wool + "\n" +
+               "\t Ore: " + this.players[this.turn].resources.ore + "\n");
+
         // Trade
         this.trade();
 
@@ -50,8 +58,6 @@ class Game {
         if (roll != 7) {
             // Add necessary resources to players hands
             this.addResources(roll);
-
-
         }
         else {
             //check and get rid of cards if more than 7
@@ -60,7 +66,7 @@ class Game {
                 var sumOfResources = 0;
                 for (var key in player.resources) {
                     if (player.resources.hasOwnProperty(key)) {
-                        sumOfResources += this.players[this.turn][player].resources[key];
+                        sumOfResources += player.resources[key];
                     }
                 }
                 if (sumOfResources > 7) {
@@ -75,6 +81,8 @@ class Game {
             } while ((0 > newRobberPosition || newRobberPosition > 18) && newRobberPosition == this.board.robberPosition);
             this.board.robberPosition = newRobberPosition;
 
+            this.board.render(this.players);
+
             // TODO: Allow player to steal from someone on the new robber tile
         }
     }
@@ -83,6 +91,8 @@ class Game {
     trade() {
         // Ask if user wants to trade
         var willTrade = prompt(this.players[this.turn].name + ", would you like to trade? (y/n)");
+        if (willTrade == "stop")
+            this.over = true;
 
         while (willTrade == "y" || willTrade == "Y") {
             // TODO: Add support for maritime and player-player trading

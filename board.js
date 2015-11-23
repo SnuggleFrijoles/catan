@@ -236,7 +236,6 @@ class Board {
 
     // Render function
     render(players) {
-        console.log("rendering");
         // Fill the background
         this.ctx.fillStyle = "LightSkyBlue";
         this.ctx.fillRect(0, 0, pageWidth, pageHeight);
