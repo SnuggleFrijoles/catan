@@ -54,6 +54,9 @@ class Game {
         var roll = this.diceRoll();
         console.log(this.turn + " " + roll);
 
+        // Let the user know the roll
+        alert("The roll was: " + roll);
+
         // Check for 7 roll
         if (roll != 7) {
             // Add necessary resources to players hands
@@ -299,6 +302,8 @@ class Game {
 
                 // Add the index of the settlement build site to the player data
                 this.players[this.turn].settlements.push(buildSite);
+
+                // TODO: Add the tile to the players owndedTiles
 
                 // Render to draw new settlement at location
                 this.board.render(this.players);
