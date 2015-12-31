@@ -18,9 +18,15 @@ var w = window,
 
 // Get number of players
 var numPlayers;
-do {
+/*****************************************************************
+ *Commented out the following so that the prompts for the players don't come up
+ *****************************************************************/
+/*do {
     numPlayers = prompt("Enter number of players (2-4): ");
-} while (2 > numPlayers || numPlayers > 4);
+} while (2 > numPlayers || numPlayers > 4);*/
+/*****************************************************************
+ *                Commented out stuff ends here
+ *****************************************************************/
 
 // Get player names and colors
 var players = [];
@@ -48,7 +54,7 @@ for (var i = 1; i <= numPlayers; i++) {
 // Setup new game
 var game = new Game(players);
 
-// Get an adaquate board
+// Get an adequate board
 
 var goodBoard , rendered = false, makingBoard = false;
 
