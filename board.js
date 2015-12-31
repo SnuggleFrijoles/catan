@@ -6,6 +6,10 @@ var tileWidth = 124,
     tileHeight = 108,
     tileBigHeight = 140;
 
+//FOR NOW: this will be a three-dimensional array that holds the data of the coordinates for each tile
+//(ArrayOfTileVerticesCoordinates[INDEX OF TILE] [INDEX OF VERTEX] [INDEX OF COORDINATE (x=0,y=1)]]
+var ArrayOfTileVerticesCoordinates = [];
+
 // Class for whole board of tiles
 class Board {
     // Constructor
@@ -92,10 +96,10 @@ class Board {
         this.usedRoadSites = [];
     }
 
-    // Function to draw a single tile
+    // Function to draw a single tile and returns the array of vertex coordinates
     drawTile(location) {
-        // Draw the hexagon
-        this.drawHexagon(location.x, location.y, location.color);
+        // Draw the hexagon and save it's array of vertices
+        var vertexArray = this.drawHexagon(location.x, location.y, location.color);
 
         // Draw the number
         if (location.value !== 0) {
@@ -114,9 +118,11 @@ class Board {
                 this.ctx.strokeText(location.value, location.x + 33, location.y + 90);
             }
         }
+
+        return vertexArray; //return the array of vertex coordinates
     }
 
-    // Function to draw a hexagon
+    // Function to draw a hexagon and returns an array with an array of vertex coordinates
     drawHexagon(x, y, fillColor) {
         var sideLength = 72;
         var hexagonAngle = 0.523598776; // 30 degrees in radians
@@ -124,20 +130,36 @@ class Board {
         var hexRadius = Math.cos(hexagonAngle) * sideLength;
         var hexRectangleHeight = sideLength + 2 * hexHeight;
         var hexRectangleWidth = 2 * hexRadius;
+        var listOfVertexCoordinates = []; //array that will hold the vertices of the hexagon
 
         this.ctx.fillStyle = fillColor;
         this.ctx.beginPath();
-        this.ctx.moveTo(x + hexRadius, y);
-        this.ctx.lineTo(x + hexRectangleWidth, y + hexHeight);
-        this.ctx.lineTo(x + hexRectangleWidth, y + hexHeight + sideLength);
-        this.ctx.lineTo(x + hexRadius, y + hexRectangleHeight);
-        this.ctx.lineTo(x, y + sideLength + hexHeight);
-        this.ctx.lineTo(x, y + hexHeight);
-        this.ctx.closePath();
+        var v0 = [x + hexRadius, y]; //creates an array with the coordinates as entries
+        this.ctx.moveTo(v0[0], v0[1]); //move to vertex 0
+        listOfVertexCoordinates.push(v0); //pushes the coordinates array to the vertex array
+        var v1 = [x + hexRectangleWidth, y + hexHeight];
+        this.ctx.lineTo(v1[0], v1[1]); // move to vertex 1
+        listOfVertexCoordinates.push(v1);
+        var v2 = [x + hexRectangleWidth, y + hexHeight + sideLength];
+        this.ctx.lineTo(v2[0], v2[1]); //move to vertex 2
+        listOfVertexCoordinates.push(v2);
+        var v3 = [x + hexRadius, y + hexRectangleHeight];
+        this.ctx.lineTo(v3[0], v3[1]); //move to vertex 3
+        listOfVertexCoordinates.push(v3);
+        var v4 = [x, y + sideLength + hexHeight];
+        this.ctx.lineTo(v4[0], v4[1]); //move to vertex 4
+        listOfVertexCoordinates.push(v4);
+        var v5 = [x, y + hexHeight];
+        this.ctx.lineTo(v5[0], v5[1]); //move to vertex 5
+        listOfVertexCoordinates.push(v5);
+        this.ctx.closePath(); //close off the hexagon by going back to vertex 0
 
         this.ctx.fill();
         this.ctx.fillStyle = "black";
         this.ctx.stroke();
+
+        return listOfVertexCoordinates; //returns the list of of vertices for the hexagon
+        //(two-dimensional array that holds arrays of x and y pairs for each vertex)
     }
 
     // Function to draw a circle
@@ -224,8 +246,16 @@ class Board {
         }
 
         // Draw the square
-        this.ctx.fillRect(x, y, 30, 30);
-        this.ctx.strokeRect(x, y, 30, 30);
+        this.ctx.fillRect(x, y, 25, 25);
+        this.ctx.strokeRect(x, y, 25, 25);
+    }
+
+    /*****************************************************************
+     *      Draw Road function method that Isaac is working on
+     *****************************************************************/
+    //Function to draw roads
+    drawRoad(edge, color) {
+
     }
 
     // Function to draw a city
@@ -240,9 +270,9 @@ class Board {
         this.ctx.fillStyle = "LightSkyBlue";
         this.ctx.fillRect(0, 0, pageWidth, pageHeight);
 
-        // Draw each tile
+        // Draw each tile and add it's array of vertices to the big array
         for (var i = 0; i < this.tiles.length; i++) {
-            this.drawTile(this.tiles[i]);
+            ArrayOfTileVerticesCoordinates.push(this.drawTile(this.tiles[i]));
         }
 
         // Draw the robber
